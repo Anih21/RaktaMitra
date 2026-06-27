@@ -1,0 +1,250 @@
+.loc-picker {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.loc-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 0.92rem;
+}
+
+.loc-breadcrumb-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--color-bg-alt);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.loc-breadcrumb-step.done {
+  background: var(--color-red-soft);
+  color: var(--color-red-dark);
+  cursor: pointer;
+}
+
+.loc-breadcrumb-step.done:hover {
+  background: rgba(211, 47, 47, 0.12);
+}
+
+.loc-breadcrumb-arrow {
+  color: var(--color-border);
+}
+
+/* Map */
+.loc-map-wrap {
+  position: relative;
+  background: linear-gradient(180deg, var(--color-red-soft) 0%, var(--color-white) 100%);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.loc-map-svg {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  display: block;
+}
+
+.loc-district-dot {
+  cursor: pointer;
+  transition: r 0.18s ease, fill 0.18s ease, stroke-width 0.18s ease;
+}
+
+.loc-district-dot circle {
+  fill: var(--color-saffron);
+  stroke: var(--color-white);
+  stroke-width: 1;
+  transition: all 0.18s ease;
+}
+
+.loc-district-dot:hover circle,
+.loc-district-dot.hovered circle {
+  fill: var(--color-red);
+  stroke-width: 2;
+  r: 2.6;
+}
+
+.loc-district-dot.selected circle {
+  fill: var(--color-emergency);
+  stroke-width: 2.2;
+}
+
+.loc-district-label {
+  font-size: 2.1px;
+  fill: var(--color-text);
+  pointer-events: none;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: white;
+  stroke-width: 0.5px;
+}
+
+.loc-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--color-red-dark);
+  color: white;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transform: translate(-50%, -130%);
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+  animation: locFadeIn 0.12s ease-out;
+}
+
+.loc-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--color-red-dark);
+}
+
+@keyframes locFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -120%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -130%);
+  }
+}
+
+.loc-map-hint {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-top: 10px;
+}
+
+.loc-map-legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.loc-map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.loc-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Taluka / Village chip grids */
+.loc-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+  animation: locSlideUp 0.22s ease-out;
+}
+
+@keyframes locSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loc-chip {
+  border: 1.5px solid var(--color-border);
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.loc-chip:hover {
+  border-color: var(--color-red);
+  background: rgba(211, 47, 47, 0.08);
+  color: var(--color-red-dark);
+  transform: translateY(-2px);
+}
+
+.loc-chip.selected {
+  border-color: var(--color-saffron-dark);
+  background: var(--color-saffron);
+  color: white;
+}
+
+.loc-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 18px 0 10px;
+  font-size: 0.95rem;
+}
+
+.loc-fallback-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fff0f0;
+  border: 1px solid rgba(211, 47, 47, 0.12);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  color: var(--color-red-dark);
+  margin-bottom: 14px;
+}
+
+.loc-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-green-light);
+  color: var(--color-green);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-weight: 600;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .loc-map-svg {
+    max-height: 360px;
+  }
+
+  .loc-district-label {
+    font-size: 2.6px;
+  }
+}

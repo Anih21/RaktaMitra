@@ -1,0 +1,36 @@
+:root {
+  /* RaktaMitra blood donation palette */
+  --color-white: #ffffff;
+  --color-bg: #FAFAFA;
+  --color-bg-alt: #FFEBEE;
+
+  --color-red: #D32F2F;
+  --color-red-light: #E57373;
+  --color-red-dark: #C62828;
+  --color-red-soft: #FFEBEE;
+
+  --color-warm-gray: #F5F5F5;
+  --color-text: #2C2C2C;
+  --color-text-muted: #5F5F5F;
+  --color-border: #E6D7D7;
+
+  --color-success: #128A3E;
+  --color-success-light: #E8F7EE;
+
+  --color-emergency: #B71C1C;
+  --color-emergency-dark: #7F1717;
+
+  --font-base: "Noto Sans Devanagari", "Segoe UI", Roboto, Arial, sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  --shadow-sm: 0 1px 4px rgba(44, 44, 44, 0.08);
+  --shadow-md: 0 6px 20px rgba(44, 44, 44, 0.1);
+
+  --container-width: 1200px;
+
+  --header-height: 68px;
+  --topbar-height: 36px;
+}
