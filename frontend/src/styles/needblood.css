@@ -1,0 +1,404 @@
+/* =========================================
+   NEED BLOOD - RESULTS & BANK CARDS
+========================================= */
+
+.blood-banks-results {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.results-header {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.results-header h3 {
+  font-size: 24px;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.results-header p {
+  color: #666;
+  margin: 0;
+  font-size: 15px;
+}
+
+.bank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* --- Bank Card Container --- */
+.bank-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.bank-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.bank-card.expanded {
+  border-color: #d32f2f; /* Blood red highlight when open */
+}
+
+/* --- Bank Card Header (Clickable) --- */
+.bank-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
+  background: #fafafa;
+}
+
+.bank-card.expanded .bank-card-header {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.bank-info-main h4 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #222;
+}
+
+.bank-address {
+  margin: 0 0 5px 0;
+  color: #555;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bank-address span {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
+.bank-contact {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bank-quick-status {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.status-badge.available {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.unavailable {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.toggle-icon {
+  color: #888;
+  font-size: 18px;
+}
+
+/* --- Bank Details & Inventory --- */
+.bank-card-details {
+  padding: 25px 20px;
+  background: #fff;
+}
+
+.inventory-title {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: #444;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.inventory-item {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.inventory-item.highlight-item {
+  background: #fff4f4;
+  border-color: #ffcdd2;
+}
+
+.inventory-item.out-of-stock {
+  opacity: 0.6;
+  filter: grayscale(100%);
+}
+
+.item-bg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffebeb;
+  color: #d32f2f;
+  font-weight: bold;
+  font-size: 16px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.out-of-stock .item-bg {
+  background: #eee;
+  color: #888;
+}
+
+.item-stats {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-units {
+  font-weight: bold;
+  font-size: 15px;
+  color: #333;
+}
+
+.out-of-stock .item-units {
+  color: #c62828;
+}
+
+.item-rate {
+  font-size: 12px;
+  color: #777;
+  display: flex;
+  align-items: center;
+}
+
+/* Plasma & Platelets */
+.other-components {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.component-card {
+  flex: 1;
+  background: #f1f8e9; /* Slight green tint */
+  border: 1px solid #c5e1a5;
+  border-radius: 6px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.component-card strong {
+  font-size: 16px;
+  color: #33691e;
+  margin-bottom: 5px;
+}
+
+.component-card span {
+  font-size: 14px;
+  color: #555;
+}
+
+.component-card .rate {
+  margin-top: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Actions */
+.bank-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  .bank-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .bank-quick-status {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .other-components {
+    flex-direction: column;
+  }
+}
+/* =========================================
+   TOAST NOTIFICATION STYLES
+========================================= */
+
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-start;
+  padding: 15px 20px;
+  max-width: 400px;
+  animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Success Styling (Green) */
+.toast-success {
+  border-left: 5px solid #2e7d32; 
+}
+.toast-success .toast-icon {
+  color: #2e7d32;
+  animation: gentleShake 2s infinite ease-in-out;
+}
+
+/* Error/Rejection Styling (Red) */
+.toast-error {
+  border-left: 5px solid #d32f2f;
+}
+.toast-error .toast-icon {
+  color: #d32f2f;
+  /* Error doesn't need to shake, it just shows up */
+}
+
+.toast-icon {
+  font-size: 24px;
+  margin-right: 15px;
+  margin-top: 2px;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-content h4 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.toast-content p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: #999;
+  cursor: pointer;
+  margin-left: 15px;
+  padding: 0;
+}
+
+.toast-close:hover {
+  color: #333;
+}
+
+/* Animations */
+@keyframes slideInRight {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes gentleShake {
+  0% { transform: rotate(0); }
+  10% { transform: rotate(15deg); }
+  20% { transform: rotate(-10deg); }
+  30% { transform: rotate(5deg); }
+  40% { transform: rotate(-5deg); }
+  50% { transform: rotate(0); }
+  100% { transform: rotate(0); }
+}
+
+/* Ensure mobile users can see the toast */
+@media (max-width: 768px) {
+  .toast-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+/* Animations */
+@keyframes slideInRight {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes gentleShake {
+  0% { transform: rotate(0); }
+  10% { transform: rotate(15deg); }
+  20% { transform: rotate(-10deg); }
+  30% { transform: rotate(5deg); }
+  40% { transform: rotate(-5deg); }
+  50% { transform: rotate(0); }
+  100% { transform: rotate(0); }
+}
+
+/* Ensure mobile users can see the toast */
+@media (max-width: 768px) {
+  .toast-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+  }
+}

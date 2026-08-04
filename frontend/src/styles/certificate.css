@@ -1,0 +1,250 @@
+/* =========================================
+   CERTIFICATE LAYOUT & DESIGN (A4 SIZE)
+========================================= */
+.certificate-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto; /* Allows horizontal scroll on small screens to view full A4 width */
+  padding-bottom: 20px;
+}
+
+.certificate-container {
+  /* Exact A4 Landscape dimensions */
+  width: 297mm;
+  height: 210mm;
+  
+  /* Styling */
+  background: #fff;
+  padding: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  font-family: 'Georgia', serif;
+  color: #333;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.certificate-border {
+  border: 5px double #FF9933; /* Saffron border */
+  padding: 40px;
+  
+  /* Subtle background pattern */
+  background-color: #ffffff;
+  background-image: radial-gradient(#fff9f2 20%, transparent 20%),
+                    radial-gradient(#fff9f2 20%, transparent 20%);
+  background-position: 0 0, 10px 10px;
+  background-size: 20px 20px;
+  
+  /* Flexbox to stretch and center content inside the A4 paper */
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Header Elements */
+.certificate-header {
+  margin-bottom: 30px;
+}
+
+.raktmitra-logo {
+  font-size: 28px;
+  font-weight: 900;
+  color: #d32f2f; /* Blood Red */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 2px;
+}
+
+.logo-icon {
+  font-size: 34px;
+}
+
+.certificate-title {
+  font-size: 40px;
+  color: #FF9933; 
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.certificate-subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+  letter-spacing: 5px;
+  margin: 0;
+}
+
+/* Body Elements */
+.certificate-body p {
+  font-size: 20px;
+  color: #555;
+  line-height: 1.6;
+  margin: 10px 0;
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.donor-name {
+  font-size: 52px;
+  color: #222;
+  font-family: 'Brush Script MT', 'Dancing Script', cursive; /* Elegant script font */
+  margin: 25px 0;
+  border-bottom: 2px solid #ddd;
+  display: inline-block;
+  padding: 0 50px 10px 50px;
+}
+
+/* Stats/Info Boxes */
+.donor-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.stat-box {
+  background: #fdfdfd;
+  border: 1px solid #eaeaea;
+  padding: 15px 35px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #777;
+  letter-spacing: 1px;
+  font-family: 'Arial', sans-serif;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 8px;
+  font-family: 'Arial', sans-serif;
+}
+
+.blood-red {
+  color: #d32f2f;
+}
+
+/* Footer & Signature */
+.certificate-footer {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.signature-line {
+  display: flex;
+  flex-direction: column;
+  border-top: 2px solid #555;
+  padding-top: 10px;
+  width: 280px;
+}
+
+.signature-line span {
+  font-size: 15px;
+  color: #777;
+  font-style: italic;
+}
+
+.signature-line strong {
+  color: #333;
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+/* Controls */
+.certificate-controls {
+  width: 100%;
+  max-width: 700px; /* Keep buttons constrained to screen size */
+  margin-top: 25px;
+}
+
+.print-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 14px;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.print-btn:hover {
+  opacity: 0.9;
+}
+
+/* =========================================
+   PRINT MEDIA QUERY (FOR DOWNLOAD/PDF)
+========================================= */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  /* Force browser to print in A4 Landscape */
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  body, html {
+    background: white !important;
+    margin: 0;
+    padding: 0;
+    width: 297mm;
+    height: 210mm;
+  }
+  
+  .donate-page-wrapper, .section, .container, .form-card-wrapper {
+    margin: 0;
+    padding: 0;
+    width: 297mm;
+    height: 210mm;
+    box-shadow: none;
+    max-width: none;
+  }
+
+  .certificate-wrapper {
+    width: 297mm;
+    height: 210mm;
+    display: block; /* Remove flex centering for print */
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .certificate-container {
+    box-shadow: none;
+    border: none;
+    width: 297mm;
+    height: 210mm;
+    margin: 0;
+    padding: 15px; /* Ensures outer spacing is kept during print */
+  }
+  
+  /* Force browsers to print background colors and images (pattern + borders) */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
