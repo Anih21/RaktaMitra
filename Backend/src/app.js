@@ -13,6 +13,6 @@ app.use("/api/bloodbanks", require("./routes/bloodBankRoutes"));
 app.use("/api/hospitals", require("./routes/hospitalRoutes"));
 app.use("/api/bloodrequests", require("./routes/bloodRequestRoutes"));
 app.use("/api/notifications", require("./routes/notificationRoutes"));
+app.use("/api/camps", require("./routes/campRoutes"));
 
 module.exports = app;
-app.use("/api/bloodrequests",bloodRequestRoutes);

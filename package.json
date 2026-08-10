@@ -1,0 +1,13 @@
+{
+  "name": "raktamitra-monorepo",
+  "version": "1.0.0",
+  "description": "Root workspace to manage RaktaMitra frontend and backend",
+  "scripts": {
+    "backend": "npm run dev --prefix Backend",
+    "frontend": "npm run dev --prefix frontend",
+    "start": "npx concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

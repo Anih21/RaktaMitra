@@ -1,22 +1,43 @@
 const mongoose = require("mongoose");
 
-const BloodBankSchema = new mongoose.Schema({
+const SeekerProfileSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
     unique: true
   },
-  bloodBankName: {
+  patientName: {
     type: String,
     required: true,
     trim: true
   },
-  licenceNumber: {
+  relationship: {
+    type: String,
+    required: true
+  },
+  bloodGroupNeeded: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  unitsNeeded: {
+    type: Number,
+    required: true
+  },
+  urgency: {
+    type: String,
+    required: true
+  },
+  medicalReason: {
     type: String,
     default: ""
   },
-  phone: {
+  hospitalName: {
+    type: String,
+    default: ""
+  },
+  doctorName: {
     type: String,
     default: ""
   },
@@ -24,11 +45,19 @@ const BloodBankSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
-  city: {
+  state: {
     type: String,
     default: ""
   },
-  state: {
+  district: {
+    type: String,
+    default: ""
+  },
+  taluka: {
+    type: String,
+    default: ""
+  },
+  city: {
     type: String,
     default: ""
   },
@@ -46,22 +75,12 @@ const BloodBankSchema = new mongoose.Schema({
       type: [Number], // [longitude, latitude]
       required: true
     }
-  },
-  inventory: {
-    "A+": { type: Number, default: 0 },
-    "A-": { type: Number, default: 0 },
-    "B+": { type: Number, default: 0 },
-    "B-": { type: Number, default: 0 },
-    "AB+": { type: Number, default: 0 },
-    "AB-": { type: Number, default: 0 },
-    "O+": { type: Number, default: 0 },
-    "O-": { type: Number, default: 0 }
   }
 }, {
   timestamps: true
 });
 
 // Index for geospatial queries
-BloodBankSchema.index({ location: "2dsphere" });
+SeekerProfileSchema.index({ location: "2dsphere" });
 
-module.exports = mongoose.model("BloodBank", BloodBankSchema);
+module.exports = mongoose.model("SeekerProfile", SeekerProfileSchema);
