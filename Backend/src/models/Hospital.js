@@ -55,7 +55,9 @@ const HospitalSchema = new mongoose.Schema({
     "AB+": { type: Number, default: 0 },
     "AB-": { type: Number, default: 0 },
     "O+": { type: Number, default: 0 },
-    "O-": { type: Number, default: 0 }
+    "O-": { type: Number, default: 0 },
+    "plasma": { type: Number, default: 0 },
+    "platelets": { type: Number, default: 0 }
   }
 }, {
   timestamps: true

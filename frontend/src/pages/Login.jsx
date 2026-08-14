@@ -18,11 +18,14 @@ export default function Login() {
     const newErrors = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = t('login.errorEmailRequired') || 'Email is required';
+      newErrors.email = t('login.errorEmailRequired') || 'Email or mobile number is required';
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) {
-        newErrors.email = t('login.errorEmailInvalid') || 'Please enter a valid email';
+      const phoneRegex = /^[0-9]{10}$/;
+      const queryVal = formData.email.trim();
+      
+      if (!emailRegex.test(queryVal) && !phoneRegex.test(queryVal)) {
+        newErrors.email = t('login.errorEmailInvalid') || 'Please enter a valid email or 10-digit mobile number';
       }
     }
 
@@ -100,19 +103,19 @@ export default function Login() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="auth-form" noValidate>
 
-            {/* Email */}
+            {/* Email or Mobile */}
             <div className="form-group">
-              <label htmlFor="email">{t('login.emailLabel') || 'Email'}</label>
+              <label htmlFor="email">{t('login.emailLabel') || 'Email or Mobile Number'}</label>
               <div className="input-wrapper">
                 <input
-                  type="email"
+                  type="text"
                   id="email"
                   name="email"
-                  placeholder={t('login.emailPlaceholder')}
+                  placeholder={t('login.emailPlaceholder') || 'Enter email or mobile number'}
                   value={formData.email}
                   onChange={handleChange}
                   className={errors.email ? 'input-error' : ''}
-                  autoComplete="email"
+                  autoComplete="username"
                 />
               </div>
               {errors.email && <span className="error-text">{errors.email}</span>}

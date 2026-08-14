@@ -14,6 +14,7 @@ import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 import BloodBankDetails from "./pages/BloodBankDetails";
 import Cart from "./pages/Cart";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
         <Route path="cart" element={<Cart/>} />
       </Route>

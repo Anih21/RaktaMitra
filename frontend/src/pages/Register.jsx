@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoleSelector from '../components/RoleSelector';
 import DonorRegistrationForm from '../components/DonorRegistrationForm';
-import SeekerRegistrationForm from '../components/SeekerRegistrationForm';
+import BloodBankRegistrationForm from '../components/BloodBankRegistrationForm';
+import HospitalRegistrationForm from '../components/HospitalRegistrationForm';
 
 import '../styles/auth.css';
 
@@ -31,9 +32,16 @@ export default function Register() {
             onBack={handleBackToRoles}
           />
         );
-      case 'seeker':
+      case 'blood_bank':
         return (
-          <SeekerRegistrationForm
+          <BloodBankRegistrationForm
+            onSuccess={handleRegistrationSuccess}
+            onBack={handleBackToRoles}
+          />
+        );
+      case 'hospital':
+        return (
+          <HospitalRegistrationForm
             onSuccess={handleRegistrationSuccess}
             onBack={handleBackToRoles}
           />

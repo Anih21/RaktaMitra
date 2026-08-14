@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const User = require("./src/models/User");
 const DonorProfile = require("./src/models/DonorProfile");
 const SeekerProfile = require("./src/models/SeekerProfile");
 const Hospital = require("./src/models/Hospital");
+const BloodBank = require("./src/models/BloodBank");
 const BloodRequest = require("./src/models/BloodRequest");
 const Notification = require("./src/models/Notification");
 const Camp = require("./src/models/Camp");
@@ -10,6 +12,7 @@ const Camp = require("./src/models/Camp");
 const { createRequest, acceptRequest, declineRequest } = require("./src/controllers/bloodRequestController");
 const { getAllDonors } = require("./src/controllers/donorController");
 const { registerCamp } = require("./src/controllers/campController");
+const { loginUser } = require("./src/controllers/authController");
 
 require("dotenv").config();
 
@@ -28,7 +31,7 @@ const mockResponse = () => {
 };
 
 async function runTests() {
-  console.log("🚀 Starting MongoDB E2E Integration, Proximity, Stock, and Camp Tests...\n");
+  console.log("🚀 Starting MongoDB E2E Integration, Proximity, Stock, Camp, and Mobile Login Tests...\n");
 
   try {
     // 1. Connect to local MongoDB
@@ -61,13 +64,18 @@ async function runTests() {
     const nearbyHospCoords = [73.8580, 18.5220]; // ~0.5km from Pune center
     const farDonorCoords = [72.8777, 19.0760]; // ~120km away in Mumbai
 
-    // 3. Create Users
+    // 3. Create properly hashed password for login testing
+    const salt = await bcrypt.genSalt(10);
+    const correctPassword = "password123";
+    const hashedPassword = await bcrypt.hash(correctPassword, salt);
+
+    // 4. Create Users
     console.log("\nCreating mock accounts...");
     const seekerUser = await User.create({
       fullName: "Test Seeker",
       email: `${testEmailPrefix}seeker@example.com`,
       phone: "1234567890",
-      password: "hashed_password",
+      password: hashedPassword,
       role: "SEEKER"
     });
 
@@ -75,7 +83,7 @@ async function runTests() {
       fullName: "Nearby Donor (O+)",
       email: `${testEmailPrefix}near_donor@example.com`,
       phone: "9876543210",
-      password: "hashed_password",
+      password: hashedPassword,
       role: "DONOR"
     });
 
@@ -83,7 +91,7 @@ async function runTests() {
       fullName: "Far-away Donor (O+)",
       email: `${testEmailPrefix}far_donor@example.com`,
       phone: "5555555555",
-      password: "hashed_password",
+      password: hashedPassword,
       role: "DONOR"
     });
 
@@ -91,7 +99,7 @@ async function runTests() {
       fullName: "Hospital With Stock",
       email: `${testEmailPrefix}hosp_stock@example.com`,
       phone: "2222222222",
-      password: "hashed_password",
+      password: hashedPassword,
       role: "HOSPITAL"
     });
 
@@ -99,11 +107,11 @@ async function runTests() {
       fullName: "Hospital Without Stock",
       email: `${testEmailPrefix}hosp_no_stock@example.com`,
       phone: "3333333333",
-      password: "hashed_password",
+      password: hashedPassword,
       role: "HOSPITAL"
     });
 
-    // 4. Create Profiles
+    // 5. Create Profiles
     await SeekerProfile.create({
       userId: seekerUser._id,
       patientName: "Jane Doe",
@@ -136,12 +144,12 @@ async function runTests() {
       location: { type: "Point", coordinates: farDonorCoords }
     });
 
-    // Hospital 1: Near, has O+ blood in stock
-    await Hospital.create({
+    // Hospital 1: Near, has O+ blood, plasma, and platelets in stock
+    const hospitalWithStock = await Hospital.create({
       userId: hospitalWithStockUser._id,
       hospitalName: "Pune City Hospital",
       location: { type: "Point", coordinates: nearbyHospCoords },
-      inventory: { "O+": 5, "A+": 0, "B+": 0, "B-": 0, "AB+": 0, "AB-": 0, "A-": 0, "O-": 0 }
+      inventory: { "O+": 5, "A+": 0, "B+": 0, "B-": 0, "AB+": 0, "AB-": 0, "A-": 0, "O-": 0, plasma: 10, platelets: 25 }
     });
 
     // Hospital 2: Near, but does NOT have O+ blood in stock (has A+ instead)
@@ -149,12 +157,42 @@ async function runTests() {
       userId: hospitalNoStockUser._id,
       hospitalName: "Pune Suburban Hospital",
       location: { type: "Point", coordinates: nearbyHospCoords },
-      inventory: { "O+": 0, "A+": 3, "B+": 0, "B-": 0, "AB+": 0, "AB-": 0, "A-": 0, "O-": 0 }
+      inventory: { "O+": 0, "A+": 3, "B+": 0, "B-": 0, "AB+": 0, "AB-": 0, "A-": 0, "O-": 0, plasma: 0, platelets: 0 }
     });
 
     console.log("✅ Mock Seeker, Donors, and Hospital profiles generated.");
 
-    // 5. Test Request Creation & Proximity Broadcasting (10km Range + Stock Filter)
+    // Verify inventory fields initialized correctly
+    console.log(`- Inventory verification (Plasma: ${hospitalWithStock.inventory.plasma}, Platelets: ${hospitalWithStock.inventory.platelets}): ✅ Valid`);
+    if (hospitalWithStock.inventory.plasma !== 10 || hospitalWithStock.inventory.platelets !== 25) {
+      console.error("❌ Plasma and platelets inventory initialization failed.");
+      process.exit(1);
+    }
+
+    // 6. Test Mobile Number Login
+    console.log("\nTesting Login Compatibility (Email vs Mobile Phone)...");
+    
+    // Test case 6.1: Login with Email
+    const loginEmailReq = { body: { email: `${testEmailPrefix}near_donor@example.com`, password: correctPassword } };
+    const loginEmailRes = mockResponse();
+    await loginUser(loginEmailReq, loginEmailRes);
+    console.log(`- Login by Email: ${loginEmailRes.body.success ? "✅ Success" : "❌ Failed"}`);
+    if (!loginEmailRes.body.success) {
+      console.error("❌ Email login failed:", loginEmailRes.body.message);
+      process.exit(1);
+    }
+
+    // Test case 6.2: Login with Phone (Mobile Number)
+    const loginPhoneReq = { body: { email: "9876543210", password: correctPassword } }; // using phone in email field
+    const loginPhoneRes = mockResponse();
+    await loginUser(loginPhoneReq, loginPhoneRes);
+    console.log(`- Login by Mobile Phone: ${loginPhoneRes.body.success ? "✅ Success" : "❌ Failed"}`);
+    if (!loginPhoneRes.body.success) {
+      console.error("❌ Mobile phone login failed:", loginPhoneRes.body.message);
+      process.exit(1);
+    }
+
+    // 7. Test Request Creation & Proximity Broadcasting (10km Range + Stock Filter)
     console.log("\nTesting Request Creation & Broadcast Proximity & Stock Filtering...");
     const reqBody = {
       patientName: "Jane Doe",
@@ -195,7 +233,7 @@ async function runTests() {
     }
     console.log("✅ Proximity & Stock Broadcast logic validated successfully.");
 
-    // 6. Test Listing All Donors API
+    // 8. Test Listing All Donors API
     console.log("\nTesting Donor Listing API...");
     const donorListReq = {};
     const donorListRes = mockResponse();
@@ -211,7 +249,7 @@ async function runTests() {
       process.exit(1);
     }
 
-    // 7. Test Single Acceptance Locking & Notification Termination
+    // 9. Test Single Acceptance Locking & Notification Termination
     console.log("\nTesting Single Acceptance Locking & Broadcast Termination...");
     
     // Attempt 1: Accept by Nearby Donor (Should succeed and terminate other broadcasts)
@@ -260,7 +298,7 @@ async function runTests() {
       process.exit(1);
     }
 
-    // 8. Test Blood Donation Camp Registration and Proximity Alerts (10km)
+    // 10. Test Blood Donation Camp Registration and Proximity Alerts (10km)
     console.log("\nTesting Blood Donation Camp Registration & Proximity Alerts...");
     const campReqBody = {
       name: "Pune Mega Blood Camp",
@@ -301,7 +339,7 @@ async function runTests() {
     }
     console.log("✅ Camp Proximity Broadcast logic validated successfully.");
 
-    // 9. Cleanup Database
+    // 11. Cleanup Database
     console.log("\nCleaning up test collections...");
     const allMockIds = [seekerUser._id, nearbyDonorUser._id, farDonorUser._id, hospitalWithStockUser._id, hospitalNoStockUser._id];
     await User.deleteMany({ _id: { $in: allMockIds } });
@@ -312,7 +350,7 @@ async function runTests() {
     await Notification.deleteMany({ userId: { $in: allMockIds } });
     await Camp.deleteMany({ organizerId: { $in: allMockIds } });
 
-    console.log("\n🎉 ALL INTEGRATION, PROXIMITY, STOCK, LOCK, AND CAMP TESTS PASSED SUCCESSFULLY!");
+    console.log("\n🎉 ALL INTEGRATION, PROXIMITY, STOCK, LOCK, LOGIN, AND CAMP TESTS PASSED SUCCESSFULLY!");
     await mongoose.connection.close();
     process.exit(0);
   } catch (error) {

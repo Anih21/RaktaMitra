@@ -12,16 +12,23 @@ export default function RoleSelector({ onSelectRole }) {
     const roles = [
         {
             id: 'donor',
-            title: t('roleSelector.donorTitle'),
-            description: t('roleSelector.donorDesc'),
+            title: t('roleSelector.donorTitle') || 'Individual Donor',
+            description: t('roleSelector.donorDesc') || 'Register as an individual to donate blood and save lives.',
             icon: FaTint,
             color: '#D32F2F'
         },
         {
-            id: 'seeker',
-            title: t('roleSelector.seekerTitle'),
-            description: t('roleSelector.seekerDesc'),
-            icon: FaHeartbeat,
+            id: 'blood_bank',
+            title: t('roleSelector.bloodBankTitle') || 'Blood Bank',
+            description: t('roleSelector.bloodBankDesc') || 'Register as a licensed blood bank to update stock and receive requests.',
+            icon: FaBuilding,
+            color: '#D32F2F'
+        },
+        {
+            id: 'hospital',
+            title: t('roleSelector.hospitalTitle') || 'Hospital',
+            description: t('roleSelector.hospitalDesc') || 'Register as a hospital to request blood or update your own stock.',
+            icon: FaHospital,
             color: '#D32F2F'
         }
     ];

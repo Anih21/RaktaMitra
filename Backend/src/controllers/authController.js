@@ -92,7 +92,7 @@ const registerUser = async (req, res) => {
           userId: user._id,
           hospitalName: profileDetails.hospitalName || fullName,
           licenceNumber: profileDetails.licenceNumber || "",
-          phone: profileDetails.phone || phone,
+          phone: profileDetails.profilePhone || profileDetails.phone || phone,
           address: profileDetails.address || "",
           city: profileDetails.city || "",
           state: profileDetails.state || "",
@@ -102,7 +102,7 @@ const registerUser = async (req, res) => {
             coordinates
           },
           inventory: profileDetails.inventory || {
-            "A+": 0, "A-": 0, "B+": 0, "B-": 0, "AB+": 0, "AB-": 0, "O+": 0, "O-": 0
+            "A+": 0, "A-": 0, "B+": 0, "B-": 0, "AB+": 0, "AB-": 0, "O+": 0, "O-": 0, "plasma": 0, "platelets": 0
           }
         });
       } else if (role === "BLOOD_BANK") {
@@ -110,7 +110,7 @@ const registerUser = async (req, res) => {
           userId: user._id,
           bloodBankName: profileDetails.bloodBankName || fullName,
           licenceNumber: profileDetails.licenceNumber || "",
-          phone: profileDetails.phone || phone,
+          phone: profileDetails.profilePhone || profileDetails.phone || phone,
           address: profileDetails.address || "",
           city: profileDetails.city || "",
           state: profileDetails.state || "",
@@ -120,7 +120,7 @@ const registerUser = async (req, res) => {
             coordinates
           },
           inventory: profileDetails.inventory || {
-            "A+": 0, "A-": 0, "B+": 0, "B-": 0, "AB+": 0, "AB-": 0, "O+": 0, "O-": 0
+            "A+": 0, "A-": 0, "B+": 0, "B-": 0, "AB+": 0, "AB-": 0, "O+": 0, "O-": 0, "plasma": 0, "platelets": 0
           }
         });
       }
@@ -154,14 +154,19 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ success: false, message: "Please provide email and password" });
+    return res.status(400).json({ success: false, message: "Please provide email/mobile and password" });
   }
 
   try {
-    // Find user by email
-    const user = await User.findOne({ email });
+    // Find user by email or phone (mobile number as username)
+    const user = await User.findOne({
+      $or: [
+        { email: email.toLowerCase() },
+        { phone: email }
+      ]
+    });
     if (!user) {
-      return res.status(401).json({ success: false, message: "Invalid email or password" });
+      return res.status(401).json({ success: false, message: "Invalid email/mobile or password" });
     }
 
     // Check password

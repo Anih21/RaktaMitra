@@ -80,10 +80,17 @@ export default function Navbar() {
             <NavLink to="/cart" onClick={closeMenu}>
               🛒 Cart
             </NavLink>
-            <NavLink to="/login" onClick={closeMenu}>
-              <FaUserCircle style={{ marginRight: 4, verticalAlign: 'middle' }} />
-              {t('nav.login')}
-            </NavLink>
+            {localStorage.getItem('token') ? (
+              <NavLink to="/dashboard" onClick={closeMenu}>
+                <FaUserCircle style={{ marginRight: 4, verticalAlign: 'middle' }} />
+                Dashboard
+              </NavLink>
+            ) : (
+              <NavLink to="/login" onClick={closeMenu}>
+                <FaUserCircle style={{ marginRight: 4, verticalAlign: 'middle' }} />
+                {t('nav.login')}
+              </NavLink>
+            )}
           </div>
 
           
